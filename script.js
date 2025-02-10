@@ -1,23 +1,18 @@
-// Initialize the scene, camera, and renderer
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+// Import scene setup and elements rendering functions
+import { setupScene } from './sceneSetup.js';
+import { createCube } from './elements.js';
 
-// Create a cube (3D object)
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
+// Initialize the scene, camera, and renderer
+const { scene, camera, renderer } = setupScene();
+
+// Add a 3D cube to the scene
+const cube = createCube();
 scene.add(cube);
 
-// Position the camera away from the object
-camera.position.z = 5;
-
-// Add OrbitControls to make it interactive
+// Add OrbitControls for interactivity
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-// Animate the scene
+// Animate the scene (this will rotate the cube)
 function animate() {
     requestAnimationFrame(animate);
 
@@ -25,11 +20,11 @@ function animate() {
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
 
-    // Render the scene and camera view
-    renderer.render(scene, camera);
-
     // Update controls (for interactivity)
     controls.update();
+
+    // Render the scene and camera view
+    renderer.render(scene, camera);
 }
 
 // Start the animation loop
